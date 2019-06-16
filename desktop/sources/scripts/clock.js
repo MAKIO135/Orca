@@ -42,6 +42,11 @@ export default function Clock (terminal) {
   // Controls
 
   this.togglePlay = function () {
+    // If in insert mode, insert space
+    if (terminal.cursor.mode === 1) {
+      terminal.cursor.move(1, 0)
+      return
+    }
     if (this.isPaused === true) {
       this.play()
     } else {

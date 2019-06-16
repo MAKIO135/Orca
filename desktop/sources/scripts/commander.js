@@ -11,8 +11,8 @@ export default function Commander (terminal) {
   this.passives = {
     'find': (p) => { terminal.cursor.find(p.str) },
     'select': (p) => { terminal.cursor.select(p.x, p.y, p.w, p.h) },
-    'inject': (p) => { terminal.cursor.select(p._x, p._y); terminal.source.inject(p._str, false) },
-    'write': (p) => { terminal.cursor.select(p._x, p._y, p._str.length) }
+    'inject': (p) => { terminal.source.inject(p.str, false) },
+    'write': (p) => { terminal.cursor.select(p.x, p.y, p.length) }
   }
 
   this.actives = {
@@ -42,8 +42,8 @@ export default function Commander (terminal) {
     // Edit
     'find': (p) => { terminal.cursor.find(p.str) },
     'select': (p) => { terminal.cursor.select(p.x, p.y, p.w, p.h) },
-    'inject': (p) => { terminal.cursor.select(p._x, p._y); terminal.source.inject(p._str, true) },
-    'write': (p) => { terminal.cursor.select(p._x, p._y, p._str.length); terminal.cursor.writeBlock([p._str.split('')]) }
+    'inject': (p) => { terminal.source.inject(p.str, true) },
+    'write': (p) => { terminal.cursor.select(p.x, p.y, p.length.length); terminal.cursor.writeBlock([p.chars]) }
   }
 
   // Make shorthands
@@ -61,10 +61,6 @@ export default function Commander (terminal) {
     this.y = parseInt(this.parts[1])
     this.w = parseInt(this.parts[2])
     this.h = parseInt(this.parts[3])
-    // Optionals Position Style
-    this._str = this.parts[0]
-    this._x = parseInt(this.parts[1])
-    this._y = parseInt(this.parts[2])
   }
 
   // Begin
@@ -153,8 +149,6 @@ export default function Commander (terminal) {
     if (event.ctrlKey) { return }
 
     if (event.key === ' ' && terminal.cursor.mode === 0) { terminal.clock.togglePlay(); event.preventDefault(); return }
-    if (event.key === ' ' && terminal.cursor.mode === 1) { terminal.cursor.move(1, 0); event.preventDefault(); return }
-
     if (event.key === 'Escape') { terminal.toggleGuide(false); terminal.commander.stop(); terminal.clear(); terminal.isPaused = false; terminal.cursor.reset(); return }
     if (event.key === 'Backspace') { terminal[this.isActive === true ? 'commander' : 'cursor'].erase(); event.preventDefault(); return }
 
