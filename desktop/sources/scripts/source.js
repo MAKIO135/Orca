@@ -56,7 +56,7 @@ export default function Source (terminal) {
     this.read(this.path)
   }
 
-  this.inject = function (part, paste = false) {
+  this.inject = function (parts, paste = false) {
     if (!this.path) { console.warn('Source', 'Not in a project.'); return }
     if (parts[1] && parts[2]) {
       const name = parts[0]
